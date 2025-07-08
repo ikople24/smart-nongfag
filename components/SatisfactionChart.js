@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const SatisfactionChart = ({ complaintId }) => {
-  // console.log("📊 Rendering SatisfactionChart for complaintId:", compleintId);
+  //console.log("📊 Rendering SatisfactionChart for complaintId:", compleintId);
   const [data, setData] = useState([]);
   const [average, setAverage] = useState(0);
 
@@ -11,7 +11,7 @@ const SatisfactionChart = ({ complaintId }) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/satisfaction/${complaintId}`, {
           method: "GET",
           headers: {
-            "x-app-id": process.env.NEXT_PUBLIC_APP_ID || "app_a",
+            "x-app-id": process.env.NEXT_PUBLIC_APP_ID || "app_d",
           },
         });
         const result = await res.json();
