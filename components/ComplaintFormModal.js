@@ -38,6 +38,7 @@ useEffect(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // ป้องกันการกดซ้ำ
 
     setValidateTrigger(true);
     await new Promise((resolve) => setTimeout(resolve, 0)); // allow validation effect to run
@@ -121,6 +122,7 @@ useEffect(() => {
     console.log("📤 Payload ส่งไป backend:", payload);
 
     try {
+      setIsSubmitting(true); // disable submit immediately
       const res = await fetch('/api/submittedreports/submit-report', {
         method: 'POST',
         headers: {
@@ -133,8 +135,6 @@ useEffect(() => {
 
       const data = await res.json();
       const complaintId = data.complaintId;
-
-      setIsSubmitting(true);
       await new Promise((resolve) => setTimeout(resolve, 4000));
       await Swal.fire({
         icon: 'success',
@@ -142,7 +142,6 @@ useEffect(() => {
         html: `เลขที่เรื่องของคุณคือ <strong>${complaintId}</strong>`,
         confirmButtonText: 'ตกลง',
       });
-      setIsSubmitting(false);
       handleClearForm();
       onClose?.(); // Close the modal
     } catch (err) {
@@ -153,6 +152,8 @@ useEffect(() => {
         text: err.message || 'ไม่สามารถส่งข้อมูลได้',
         confirmButtonText: 'ตกลง',
       });
+    } finally {
+      setIsSubmitting(false); // re-enable submit button
     }
   };
 
@@ -170,6 +171,7 @@ useEffect(() => {
     setValidateTrigger(false);
     setFormErrors({});
     reporterValidRef.current = true;
+    setIsSubmitting(false);
   };
 
   const handleCommunitySelect = (community) => {
