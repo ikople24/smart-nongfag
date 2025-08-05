@@ -1,11 +1,11 @@
 import { Dialog } from "@headlessui/react";
-import { ReceiptText, Search } from "lucide-react";
+import { ReceiptText } from "lucide-react";
 import { useMenuStore } from "@/stores/useMenuStore";
 import { useProblemOptionStore } from "@/stores/useProblemOptionStore";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import CardAssignment from "./CardAssignment";
 import CardOfficail from "./CardOfficail";
+import CardAssignment from "./CardAssignment";
 import SatisfactionChart from "./SatisfactionChart";
 
 export default function CardModalDetail({ modalData, onClose }) {
@@ -65,29 +65,27 @@ export default function CardModalDetail({ modalData, onClose }) {
                         title="ดูรูปเต็มจอ"
                         onClick={() => setPreviewImg(img)}
                       >
-                        <Search size={16} />
+                        🔍
                       </button>
                     </div>
-                    {modalData.images.length > 1 && (
-                      <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2 z-10">
-                        <button
-                          onClick={() =>
-                            setCurrentSlide((currentSlide - 1 + modalData.images.length) % modalData.images.length)
-                          }
-                          className="btn btn-circle btn-sm bg-white/20 hover:bg-white/40 border-white/30 text-white backdrop-blur"
-                        >
-                          ❮
-                        </button>
-                        <button
-                          onClick={() =>
-                            setCurrentSlide((currentSlide + 1) % modalData.images.length)
-                          }
-                          className="btn btn-circle btn-sm bg-white/20 hover:bg-white/40 border-white/30 text-white backdrop-blur"
-                        >
-                          ❯
-                        </button>
-                      </div>
-                    )}
+                    <div className="absolute flex justify-between transform -translate-y-1/2 left-2 right-2 top-1/2 z-10">
+                      <button
+                        onClick={() =>
+                          setCurrentSlide((currentSlide - 1 + modalData.images.length) % modalData.images.length)
+                        }
+                        className="btn btn-circle btn-sm bg-white/20 hover:bg-white/40 border-white/30 text-white backdrop-blur"
+                      >
+                        ❮
+                      </button>
+                      <button
+                        onClick={() =>
+                          setCurrentSlide((currentSlide + 1) % modalData.images.length)
+                        }
+                        className="btn btn-circle btn-sm bg-white/20 hover:bg-white/40 border-white/30 text-white backdrop-blur"
+                      >
+                        ❯
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
