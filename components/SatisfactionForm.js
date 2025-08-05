@@ -1,15 +1,51 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import { z } from "zod";
 
-const SatisfactionForm = ({ onSubmit, complaintId }) => {
+const SatisfactionForm = ({ onSubmit, complaintId, status }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Zod schema สำหรับ validation
+  const satisfactionFormSchema = z.object({
+    rating: z.number().min(1, "กรุณาให้คะแนน"),
+    comment: z.string().min(1, "กรุณากรอกความคิดเห็น"),
+    complaintId: z.string().min(1, "ไม่พบรหัสเรื่องร้องเรียน"),
+  });
 
   const handleSubmit = async () => {
+    // ป้องกันการกดปุ่มซ้ำ
+    if (isSubmitting) {
+      return;
+    }
+
     console.log("📦 Submitting Satisfaction:", { complaintId, rating, comment });
 
-    if (rating === 0) {
-      Swal.fire("กรุณาให้คะแนน", "โปรดเลือกคะแนนก่อนส่งแบบประเมิน", "warning");
+    // Validation ด้วย Zod
+    const dataToValidate = {
+      rating,
+      comment: comment.trim(),
+      complaintId,
+    };
+
+    const validationResult = satisfactionFormSchema.safeParse(dataToValidate);
+    if (!validationResult.success) {
+      // เรียงลำดับ error ตามความสำคัญ
+      const errorOrder = [
+        'rating',
+        'comment',
+        'complaintId'
+      ];
+      
+      const sortedErrors = validationResult.error.errors.sort((a, b) => {
+        const aIndex = errorOrder.indexOf(a.path[0]);
+        const bIndex = errorOrder.indexOf(b.path[0]);
+        return aIndex - bIndex;
+      });
+      
+      const errorMessages = sortedErrors.map((err, index) => `${index + 1}. ${err.message}`).join('\n');
+      Swal.fire("ข้อมูลไม่ครบถ้วน", errorMessages, "warning");
       return;
     }
 
@@ -24,19 +60,38 @@ const SatisfactionForm = ({ onSubmit, complaintId }) => {
 
     if (!result.isConfirmed) return;
 
-    const res = await fetch("/api/satisfaction/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ complaintId, rating, comment }),
-    });
+    setIsSubmitting(true);
 
-    if (res.ok) {
-      Swal.fire("ส่งสำเร็จ", "ขอบคุณสำหรับความคิดเห็นของคุณ", "success");
-      if (onSubmit) onSubmit();
-    } else {
+    try {
+      const res = await fetch("/api/satisfaction/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ complaintId, rating, comment }),
+      });
+
+      if (res.ok) {
+        Swal.fire("ส่งสำเร็จ", "ขอบคุณสำหรับความคิดเห็นของคุณ", "success");
+        if (onSubmit) onSubmit();
+      } else {
+        Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถส่งความคิดเห็นได้", "error");
+      }
+    } catch (err) {
+      console.error(err);
       Swal.fire("เกิดข้อผิดพลาด", "ไม่สามารถส่งความคิดเห็นได้", "error");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  // ตรวจสอบสถานะก่อนแสดงฟอร์ม
+  if (status !== "ดำเนินการเสร็จสิ้น") {
+    return (
+      <div className="text-center p-4 text-gray-500">
+        <p>ไม่สามารถประเมินความพึงพอใจได้</p>
+        <p className="text-sm">กรุณารอให้การดำเนินการเสร็จสิ้นก่อน</p>
+      </div>
+    );
+  }
 
   return (
     <form>
@@ -68,8 +123,16 @@ const SatisfactionForm = ({ onSubmit, complaintId }) => {
           type="button"
           onClick={handleSubmit}
           className="btn btn-primary btn-sm mt-4"
+          disabled={isSubmitting}
         >
-          ส่งความคิดเห็น
+          {isSubmitting ? (
+            <>
+              <span className="loading loading-spinner loading-xs"></span>
+              กำลังส่ง...
+            </>
+          ) : (
+            'ส่งความคิดเห็น'
+          )}
         </button>
       </div>
     </form>
