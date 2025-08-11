@@ -102,3 +102,77 @@ body {
   z-index: 0;
   filter: blur(4px);
 }
+
+/* Custom marker styles for map */
+.marker-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.custom-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.marker-icon-category {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.category-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+/* Popup styles */
+.popup-content {
+  min-width: 200px;
+}
+
+.popup-title {
+  margin: 0 0 8px 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.popup-text {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.status-badge {
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.status-in_progress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-completed {
+  background-color: #d1fae5;
+  color: #065f46;
+}
