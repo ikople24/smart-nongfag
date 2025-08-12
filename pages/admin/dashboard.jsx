@@ -12,6 +12,8 @@ import {
   UserGroupIcon,
   StarIcon
 } from '@heroicons/react/24/outline';
+import { createProblemAreaPolygons, createRectanglePolygon, createCommunityPolygon } from '@/utils/polygonUtils';
+import { loadGeoJSONFromFile, createCommunityPolygonsFromGeoJSON, createProblemAreaPolygonsFromGeoJSON } from '@/utils/geojsonUtils';
 
 // Dynamic import for map component to avoid SSR issues
 const MapWithNoSSR = dynamic(() => import('@/components/AdminDashboardMap'), {
@@ -36,7 +38,12 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("ทั้งหมด");
   const [selectedStatus, setSelectedStatus] = useState("ทั้งหมด");
-  const [dateRange, setDateRange] = useState("7d"); // 7d, 30d, 90d, all
+  const [dateRange, setDateRange] = useState("all"); // 7d, 30d, 90d, all
+  
+  // ข้อมูล polygon สำหรับแสดงพื้นที่ชุมชนและพื้นที่ปัญหา
+  const [polygons, setPolygons] = useState([]);
+  const [geojsonData, setGeojsonData] = useState(null);
+  const [geojsonLoading, setGeojsonLoading] = useState(true);
 
   const { menu, fetchMenu } = useMenuStore();
 
@@ -48,10 +55,65 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (userId) {
-      fetchDashboardData();
-      fetchMenu();
+      // โหลดข้อมูลทั้งหมดพร้อมกัน
+      const loadAllData = async () => {
+        try {
+          // โหลด GeoJSON และ Menu พร้อมกัน
+          await Promise.all([
+            loadGeoJSONData(),
+            fetchMenu()
+          ]);
+          
+          // รอสักครู่ให้ข้อมูลพร้อม
+          await new Promise(resolve => setTimeout(resolve, 500));
+          
+          // โหลด Dashboard data
+          await fetchDashboardData();
+        } catch (error) {
+          console.error('Error loading data:', error);
+        }
+      };
+      
+      loadAllData();
     }
   }, [userId, dateRange]);
+
+  // สร้าง polygons เมื่อ GeoJSON และ complaints พร้อม
+  useEffect(() => {
+    if (!geojsonLoading && geojsonData && complaints.length > 0) {
+      console.log('Creating polygons from GeoJSON data...');
+      
+      // สร้าง polygon จากข้อมูล GeoJSON (14 ชุมชน) เท่านั้น
+      const communityPolygons = createCommunityPolygonsFromGeoJSON(geojsonData, {
+        fillOpacity: 0.15,
+        weight: 2
+      });
+      
+      setPolygons(communityPolygons);
+      console.log('Polygons created from GeoJSON:', communityPolygons.length, 'communities:', communityPolygons.length);
+    } else if (!geojsonLoading && !geojsonData && complaints.length > 0) {
+      console.log('GeoJSON not available, creating fallback polygons...');
+      // Fallback: สร้างเฉพาะ polygon สำหรับพื้นที่ที่มีปัญหามาก (ไม่มีชุมชนตัวอย่าง)
+      const problemAreaPolygons = createProblemAreaPolygons(complaints, 3);
+      setPolygons(problemAreaPolygons);
+    }
+  }, [geojsonLoading, geojsonData, complaints]);
+
+  const loadGeoJSONData = async () => {
+    try {
+      setGeojsonLoading(true);
+      console.log('Starting to load GeoJSON data...');
+      const data = await loadGeoJSONFromFile('/saard.geojson');
+      setGeojsonData(data);
+      console.log('GeoJSON data loaded successfully:', data);
+      console.log('Number of communities:', data.features?.length || 0);
+    } catch (error) {
+      console.error('Error loading GeoJSON data:', error);
+    } finally {
+      setGeojsonLoading(false);
+      console.log('GeoJSON loading finished');
+    }
+  };
 
   const fetchDashboardData = async () => {
     try {
@@ -212,7 +274,7 @@ export default function AdminDashboard() {
             <p className="text-gray-600">ดูสถิติและติดตามการดำเนินการต่างๆ</p>
           </div>
           <button
-            onClick={() => router.push('/admin')}
+            onClick={() => router.push('/admin/manage-complaints')}
             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
           >
             กลับไปหน้าจัดการ
@@ -367,12 +429,23 @@ export default function AdminDashboard() {
           <div className="flex items-center">
             <MapPinIcon className="h-6 w-6 text-gray-600 mr-2" />
             <h3 className="text-lg font-semibold">แผนที่แสดงตำแหน่งปัญหา</h3>
+            {geojsonLoading && (
+              <div className="ml-2 flex items-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                <span className="text-sm text-blue-600">กำลังโหลดข้อมูลชุมชน...</span>
+              </div>
+            )}
           </div>
           <div className="text-sm text-gray-500">
             แสดง {filteredComplaints.filter(c => c.location && c.location.lat && c.location.lng).length} จาก {filteredComplaints.length} รายการ
+            {!geojsonLoading && geojsonData && geojsonData.features && (
+              <span className="ml-2 text-green-600">
+                • {geojsonData.features.length} ชุมชน
+              </span>
+            )}
           </div>
         </div>
-        <MapWithNoSSR complaints={filteredComplaints} />
+        <MapWithNoSSR complaints={filteredComplaints} polygons={polygons} />
       </div>
 
       {/* Statistics by Category */}

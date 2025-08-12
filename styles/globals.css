@@ -98,6 +98,70 @@ body {
   border-radius: 0.5rem;
   background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
   background-size: 400% 400%;
+
+/* Community Label Styles */
+.community-label-marker {
+  background: transparent !important;
+  border: none !important;
+  width: 120px !important;
+  height: 30px !important;
+}
+
+.community-label {
+  font-family: 'Kanit', sans-serif;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 1);
+  transition: all 0.2s ease;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  word-wrap: break-word;
+  hyphens: auto;
+  line-height: 1.2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.community-label:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4) !important;
+  z-index: 9999 !important;
+  max-width: 150px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+/* Popup Styles */
+.popup-content {
+  font-family: 'Kanit', sans-serif;
+  min-width: 200px;
+}
+
+.popup-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 4px;
+}
+
+.popup-text {
+  font-size: 12px;
+  color: #374151;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.popup-text p {
+  margin: 2px 0;
+}
+
+.popup-text strong {
+  color: #1f2937;
+  font-weight: 600;
+}
   animation: rainbowBlur 6s ease infinite;
   z-index: 0;
   filter: blur(4px);
