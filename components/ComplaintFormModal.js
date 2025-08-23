@@ -18,7 +18,6 @@ const ComplaintFormModal = ({ selectedLabel, onClose }) => {
   const [selectedCommunity, setSelectedCommunity] = useState('');
   const [prefix, setPrefix] = useState('นาย');
   const [fullName, setFullName] = useState('');
-  const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [detail, setDetail] = useState('');
   const [imageUrls, setImageUrls] = useState([]);
@@ -105,7 +104,6 @@ useEffect(() => {
     const payload = {
       prefix,
       fullName,
-      address,
       phone,
       community: selectedCommunity,
       problems: selectedProblems.map(id => {
@@ -163,7 +161,6 @@ useEffect(() => {
     setSelectedCommunity('');
     setPrefix('นาย');
     setFullName('');
-    setAddress('');
     setPhone('');
     setDetail('');
     setImageUrls([]); // Explicitly clear imageUrls
@@ -251,8 +248,6 @@ useEffect(() => {
             setPrefix={setPrefix}
             fullName={fullName}
             setFullName={setFullName}
-            address={address}
-            setAddress={setAddress}
             phone={phone}
             setPhone={setPhone}
             detail={detail}

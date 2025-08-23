@@ -26,6 +26,7 @@ export default function AdminPage() {
   const [filterCategory, setFilterCategory] = useState("ทั้งหมด");
   const isAdminTab = activeTab === "admin";
   const [isEditing, setIsEditing] = useState(false);
+  const [editingId, setEditingId] = useState(null); // เพิ่ม state สำหรับเก็บ ID ของรายการที่กำลังแก้ไข
 
   const { menu, fetchMenu, menuLoading } = useMenuStore();
   const { problemOptions, fetchProblemOptions, problemLoading } = useProblemOptionStore();
@@ -42,29 +43,39 @@ export default function AdminPage() {
     fetchAdminOptions();
   }, []);
 
+  // เพิ่ม function สำหรับ reset form
+  const resetForm = () => {
+    setLabel("");
+    setIconUrl("");
+    setCategory("");
+    setIsEditing(false);
+    setEditingId(null);
+  };
+
+  // เพิ่ม function สำหรับเปลี่ยน tab
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    resetForm(); // reset form เมื่อเปลี่ยน tab
+  };
+
   const handleEdit = (item) => {
     setLabel(item.label);
-    setIconUrl(item.icon_url);
-    setCategory(item.menu_category);
+    // สำหรับ admin options ใช้ icon_url, สำหรับ problem options ใช้ iconUrl
+    setIconUrl(isAdminTab ? item.icon_url : item.iconUrl);
+    // สำหรับ admin options ใช้ menu_category, สำหรับ problem options ใช้ category
+    setCategory(isAdminTab ? item.menu_category : item.category);
     setIsEditing(true);
+    setEditingId(item._id); // เก็บ ID ของรายการที่กำลังแก้ไข
   };
 
   const handleDelete = async (id) => {
     if (!confirm("คุณแน่ใจหรือว่าต้องการลบรายการนี้?")) return;
 
-    const BASE_URL =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3004"
-        : "https://express-docker-server-production.up.railway.app";
-
     const endpoint = isAdminTab ? "/api/admin-options" : "/api/problem-options";
 
     try {
-      const res = await fetch(`${BASE_URL}${endpoint}/${id}`, {
+      const res = await fetch(`${endpoint}/${id}`, {
         method: "DELETE",
-        headers: {
-          "x-app-id": process.env.NEXT_PUBLIC_APP_ID,
-        }
       });
 
       if (!res.ok) throw new Error("Failed to delete");
@@ -83,7 +94,7 @@ export default function AdminPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     const data = isAdminTab
+    const data = isAdminTab
       ? {
           label,
           icon_url: iconUrl,
@@ -97,19 +108,15 @@ export default function AdminPage() {
           active: true,
         };
 
-    const BASE_URL =
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3004"
-        : "https://express-docker-server-production.up.railway.app";
-
     const endpoint = isAdminTab ? "/api/admin-options" : "/api/problem-options";
+    const method = isEditing ? "PUT" : "POST"; // ใช้ PUT เมื่อแก้ไข, POST เมื่อสร้างใหม่
+    const url = isEditing ? `${endpoint}/${editingId}` : endpoint;
 
     try {
-      const res = await fetch(`${BASE_URL}${endpoint}`, {
-        method: "POST",
+      const res = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
-          "x-app-id": process.env.NEXT_PUBLIC_APP_ID,
         },
         body: JSON.stringify(data),
       });
@@ -118,11 +125,8 @@ export default function AdminPage() {
         throw new Error("Failed to submit");
       }
 
-      alert("✅ บันทึกข้อมูลสำเร็จ");
-      setIsEditing(false);
-      setLabel("");
-      setIconUrl("");
-      setCategory("");
+      alert(isEditing ? "✅ อัปเดตข้อมูลสำเร็จ" : "✅ บันทึกข้อมูลสำเร็จ");
+      resetForm(); // ใช้ resetForm แทนการ reset แยก
 
       if (isAdminTab) {
         const options = await fetch("/api/admin-options").then((r) => r.json());
@@ -164,13 +168,13 @@ export default function AdminPage() {
     <div className="p-4">
       <div className="flex flex-col lg:flex-row justify-center mb-6">
         <button
-          onClick={() => setActiveTab("problem")}
+          onClick={() => handleTabChange("problem")}
           className={`px-4 py-2 rounded-t-lg lg:rounded-l-lg lg:rounded-r-none border ${activeTab === "problem" ? "bg-blue-600 text-white" : "bg-white text-gray-700"}`}
         >
           รายการแจ้งปัญหา
         </button>
         <button
-          onClick={() => setActiveTab("admin")}
+          onClick={() => handleTabChange("admin")}
           className={`px-4 py-2 rounded-b-lg lg:rounded-r-lg lg:rounded-l-none border ${activeTab === "admin" ? "bg-blue-600 text-white" : "bg-white text-gray-700"}`}
         >
           รายการเจ้าหน้าที่
@@ -181,7 +185,9 @@ export default function AdminPage() {
         <>
           <div className={`card bg-base-100 shadow mb-6 ${isEditing ? 'border-2 border-orange-400' : ''}`}>
             <div className="card-body">
-              <h1 className="text-xl font-bold mb-4">Admin Upload Page</h1>
+              <h1 className="text-xl font-bold mb-4">
+                {isEditing ? "แก้ไขรายการแจ้งปัญหา" : "Admin Upload Page"}
+              </h1>
               <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium">Label</label>
@@ -246,12 +252,7 @@ export default function AdminPage() {
               <button
                 type="button"
                 className="btn btn-outline btn-warning"
-                onClick={() => {
-                  setLabel("");
-                  setIconUrl("");
-                  setCategory("");
-                  setIsEditing(false);
-                }}
+                onClick={resetForm}
               >
                 ยกเลิก
               </button>
@@ -259,7 +260,7 @@ export default function AdminPage() {
                 type="submit"
                 className="btn btn-accent ml-2"
               >
-                บันทึกข้อมูล
+                {isEditing ? "อัปเดตข้อมูล" : "บันทึกข้อมูล"}
               </button>
             </div>
               </form>
@@ -370,7 +371,9 @@ export default function AdminPage() {
         <>
           <div className={`card bg-base-100 shadow mb-6 ${isEditing ? 'border-2 border-orange-400' : ''}`}>
             <div className="card-body">
-              <h1 className="text-xl font-bold mb-4">Admin Upload Page (เจ้าหน้าที่)</h1>
+              <h1 className="text-xl font-bold mb-4">
+                {isEditing ? "แก้ไขรายการเจ้าหน้าที่" : "Admin Upload Page (เจ้าหน้าที่)"}
+              </h1>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium">Label</label>
@@ -435,12 +438,7 @@ export default function AdminPage() {
                   <button
                     type="button"
                     className="btn btn-outline btn-warning"
-                    onClick={() => {
-                      setLabel("");
-                      setIconUrl("");
-                      setCategory("");
-                      setIsEditing(false);
-                    }}
+                    onClick={resetForm}
                   >
                     ยกเลิก
                   </button>
@@ -448,7 +446,7 @@ export default function AdminPage() {
                     type="submit"
                     className="btn btn-accent ml-2"
                   >
-                    บันทึกข้อมูล
+                    {isEditing ? "อัปเดตข้อมูล" : "บันทึกข้อมูล"}
                   </button>
                 </div>
               </form>
