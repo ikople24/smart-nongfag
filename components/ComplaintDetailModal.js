@@ -356,12 +356,7 @@ export default function ComplaintDetailModal({ complaint, isOpen, onClose, assig
                       <span className="text-sm font-medium text-gray-700">เบอร์โทร:</span>
                       <span className="text-sm text-gray-900 ml-2">{reporterInfo.phone}</span>
                     </div>
-                    {reporterInfo.address && (
-                      <div>
-                        <span className="text-sm font-medium text-gray-700">ที่อยู่:</span>
-                        <span className="text-sm text-gray-900 ml-2">{reporterInfo.address}</span>
-                      </div>
-                    )}
+
                     {reporterInfo.community && (
                       <div>
                         <span className="text-sm font-medium text-gray-700">ชุมชน:</span>
