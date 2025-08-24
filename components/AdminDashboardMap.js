@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, Polygon, LayersControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 // Fix for default markers in Leaflet
@@ -13,6 +13,8 @@ L.Icon.Default.mergeOptions({
 
 // Import menu store to get category icons
 import { useMenuStore } from '@/stores/useMenuStore';
+
+const { BaseLayer } = LayersControl;
 
 // ฟังก์ชันคำนวณจุดศูนย์กลางของ polygon
 const calculatePolygonCenter = (coordinates) => {
@@ -235,6 +237,8 @@ const AdminDashboardMap = ({ complaints, polygons = [] }) => {
     fetchMenu();
   }, [fetchMenu]);
 
+
+
   // Force re-render when complaints change
   useEffect(() => {
     setMapKey(prev => prev + 1);
@@ -324,10 +328,40 @@ const AdminDashboardMap = ({ complaints, polygons = [] }) => {
         style={{ zIndex: 1 }}
       >
         <MapController onMapReady={handleMapReady} />
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="© OpenStreetMap contributors"
-        />
+        <LayersControl
+          position="bottomleft"
+          className="custom-layers-control"
+          onAdd={() => {
+            // console.log('🗺️ LayersControl added at bottomleft');
+            // Force positioning after component is added
+            setTimeout(() => {
+              const layersControl = document.querySelector('.leaflet-control-layers');
+              if (layersControl) {
+                layersControl.style.bottom = '10px';
+                layersControl.style.left = '10px';
+                layersControl.style.top = 'auto';
+                layersControl.style.right = 'auto';
+                // console.log('🗺️ Forced LayersControl positioning');
+              }
+            }, 100);
+          }}
+        >
+          {/* 🗺️ แผนที่ถนน */}
+          <BaseLayer checked name="🗺️ แผนที่ถนน">
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution="&copy; OpenStreetMap contributors"
+            />
+          </BaseLayer>
+
+          {/* 🛰️ แผนที่ดาวเทียม */}
+          <BaseLayer name="🛰️ แผนที่ดาวเทียม">
+            <TileLayer
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              attribution="Tiles &copy; Esri"
+            />
+          </BaseLayer>
+        </LayersControl>
         
         {/* Render Polygons */}
         {showPolygons && polygons.map((polygon, index) => {
@@ -345,7 +379,7 @@ const AdminDashboardMap = ({ complaints, polygons = [] }) => {
           
           // Debug: แสดงข้อมูลชุมชน
           const shortenedName = shortenCommunityName(polygon.name);
-          console.log(`Community ${index + 1}: "${polygon.name}" -> "${shortenedName}" at ${centerPoint[0].toFixed(6)}, ${centerPoint[1].toFixed(6)}`);
+          // console.log(`Community ${index + 1}: "${polygon.name}" -> "${shortenedName}" at ${centerPoint[0].toFixed(6)}, ${centerPoint[1].toFixed(6)}`);
           
           return (
             <div key={uniqueKey}>

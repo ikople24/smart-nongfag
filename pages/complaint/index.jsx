@@ -26,10 +26,10 @@ export default function ComplaintListPage() {
 
   useEffect(() => {
     const loadData = async () => {
-      console.log("📤 เรียก API /api/complaints...");
+              // console.log("📤 เรียก API /api/complaints...");
       await fetchComplaints("อยู่ระหว่างดำเนินการ");
       await fetchProblemOptions();
-      console.log("✅ ดึง complaints เสร็จ");
+              // console.log("✅ ดึง complaints เสร็จ");
       setLoading(false);
     };
     loadData();

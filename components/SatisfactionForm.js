@@ -20,7 +20,7 @@ const SatisfactionForm = ({ onSubmit, complaintId, status }) => {
       return;
     }
 
-    console.log("📦 Submitting Satisfaction:", { complaintId, rating, comment });
+    // console.log("📦 Submitting Satisfaction:", { complaintId, rating, comment });
 
     // Validation ด้วย Zod
     const dataToValidate = {

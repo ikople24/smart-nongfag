@@ -10,14 +10,14 @@ export default async function handler(req, res) {
     const authToken = req.headers['authorization'] || req.headers['Authorization'];
 
     // Debug: ดูข้อมูลที่ส่งไป backend
-    console.log("🔍 UPDATE API - Sending to backend:", {
-      body: req.body,
-      assignedTask: req.body.assignedTask,
-      assignedTaskType: typeof req.body.assignedTask,
-      hasAuthToken: !!authToken,
-      assignedTaskLength: req.body.assignedTask?.length,
-      assignedTaskSplit: typeof req.body.assignedTask === 'string' ? req.body.assignedTask?.split(", ") : req.body.assignedTask
-    });
+    // console.log("🔍 UPDATE API - Sending to backend:", {
+    //   body: req.body,
+    //   assignedTask: req.body.assignedTask,
+    //   assignedTaskType: typeof req.body.assignedTask,
+    //   hasAuthToken: !!authToken,
+    //   assignedTaskLength: req.body.assignedTask?.length,
+    //   assignedTaskSplit: typeof req.body.assignedTask === 'string' ? req.body.assignedTask?.split(", ") : req.body.assignedTask
+    // });
 
     const response = await axios.put(
       `${process.env.BACKEND_API_URL}/api/users/update`,
@@ -32,15 +32,15 @@ export default async function handler(req, res) {
     );
 
     // Debug: ดูผลลัพธ์จาก backend
-    console.log("✅ UPDATE API - Backend response:", {
-      success: response.data.success,
-      assignedTask: response.data.user?.assignedTask,
-      action: "replaced",
-      status: response.status,
-      assignedTaskType: typeof response.data.user?.assignedTask,
-      assignedTaskLength: response.data.user?.assignedTask?.length,
-      assignedTaskSplit: typeof response.data.user?.assignedTask === 'string' ? response.data.user?.assignedTask?.split(", ") : response.data.user?.assignedTask
-    });
+    // console.log("✅ UPDATE API - Backend response:", {
+    //   success: response.data.success,
+    //   assignedTask: response.data.user?.assignedTask,
+    //   action: "replaced",
+    //   status: response.status,
+    //   assignedTaskType: typeof response.data.user?.assignedTask,
+    //   assignedTaskLength: response.data.user?.assignedTask?.length,
+    //   assignedTaskSplit: typeof response.data.user?.assignedTask === 'string' ? response.data.user?.assignedTask?.split(", ") : response.data.user?.assignedTask
+    // });
 
     return res.status(200).json(response.data);
   } catch (e) {

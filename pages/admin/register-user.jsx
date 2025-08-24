@@ -171,22 +171,22 @@ export default function RegisterUserPage() {
         phone: existingUser.phone || "",
       });
       
-      console.log("🔧 Edit mode - Original assignedTask:", existingUser.assignedTask);
-      console.log("🔧 Edit mode - Original assignedTask type:", typeof existingUser.assignedTask);
-      console.log("🔧 Edit mode - Converted assignedTask:", assignedTaskArray);
-      console.log("🔧 Edit mode - Unique assignedTask:", uniqueAssignedTaskArray);
-      console.log("🔧 Edit mode - Unique assignedTask count:", uniqueAssignedTaskArray.length);
-      console.log("🔧 Edit mode - Final assignedTask:", uniqueAssignedTaskArray);
-      console.log("🔧 Edit mode - Final assignedTask count:", uniqueAssignedTaskArray.length);
-      console.log("🔧 Edit mode - Form will allow multiple selection");
-      console.log("🔧 Edit mode - When saving, it will replace all previous tasks");
-      console.log("🔧 Edit mode - User can select multiple tasks but they will replace old ones");
-      console.log("🔧 Edit mode - This is multi-select mode with replace on save");
-      console.log("🔧 Edit mode - Selected tasks:", uniqueAssignedTaskArray);
-      console.log("🔧 Edit mode - Database value:", existingUser.assignedTask);
-      console.log("🔧 Edit mode - Database value type:", typeof existingUser.assignedTask);
-      console.log("🔧 Edit mode - Database value split:", typeof existingUser.assignedTask === 'string' ? existingUser.assignedTask?.split(", ") : existingUser.assignedTask);
-      console.log("🔧 Edit mode - Safe conversion completed");
+              // console.log("🔧 Edit mode - Original assignedTask:", existingUser.assignedTask);
+        // console.log("🔧 Edit mode - Original assignedTask type:", typeof existingUser.assignedTask);
+              // console.log("🔧 Edit mode - Converted assignedTask:", assignedTaskArray);
+        // console.log("🔧 Edit mode - Unique assignedTask:", uniqueAssignedTaskArray);
+        // console.log("🔧 Edit mode - Unique assignedTask count:", uniqueAssignedTaskArray.length);
+        // console.log("🔧 Edit mode - Final assignedTask:", uniqueAssignedTaskArray);
+        // console.log("🔧 Edit mode - Final assignedTask count:", uniqueAssignedTaskArray.length);
+              // console.log("🔧 Edit mode - Form will allow multiple selection");
+        // console.log("🔧 Edit mode - When saving, it will replace all previous tasks");
+        // console.log("🔧 Edit mode - User can select multiple tasks but they will replace old ones");
+        // console.log("🔧 Edit mode - This is multi-select mode with replace on save");
+              // console.log("🔧 Edit mode - Selected tasks:", uniqueAssignedTaskArray);
+              // console.log("🔧 Edit mode - Database value:", existingUser.assignedTask);
+        // console.log("🔧 Edit mode - Database value type:", typeof existingUser.assignedTask);
+        // console.log("🔧 Edit mode - Database value split:", typeof existingUser.assignedTask === 'string' ? existingUser.assignedTask?.split(", ") : existingUser.assignedTask);
+        // console.log("🔧 Edit mode - Safe conversion completed");
     }
     setIsEditing(true);
   };
@@ -211,7 +211,7 @@ export default function RegisterUserPage() {
 
     // ป้องกันการกดปุ่มซ้ำ
     if (isSubmitting) {
-      console.log("⚠️ Form submission blocked - already submitting");
+      // console.log("⚠️ Form submission blocked - already submitting");
       e.stopPropagation();
       e.preventDefault();
       return false;
@@ -268,7 +268,7 @@ export default function RegisterUserPage() {
       }, 1000);
       return;
     }
-    console.log("🚀 Starting form submission...");
+    // console.log("🚀 Starting form submission...");
     
     // แสดง loading
     LoadingAlert.fire({
@@ -285,19 +285,19 @@ export default function RegisterUserPage() {
       clerkId: user?.id,
     };
     
-    console.log("🔍 FRONTEND - Before sending:", {
-      originalAssignedTask: form.assignedTask,
-      uniqueAssignedTask: uniqueAssignedTask,
-      finalAssignedTask: uniqueAssignedTask.join(", "),
-      isEditing: isEditing
-    });
+    // console.log("🔍 FRONTEND - Before sending:", {
+    //   originalAssignedTask: form.assignedTask,
+    //   uniqueAssignedTask: uniqueAssignedTask,
+    //   finalAssignedTask: uniqueAssignedTask.join(", "),
+    //   isEditing: isEditing
+    // });
     
-    console.log("📤 Payload assignedTask:", form.assignedTask);
-    console.log("📤 Payload uniqueAssignedTask:", uniqueAssignedTask);
-    console.log("📤 Payload assignedTask (joined):", uniqueAssignedTask.join(", "));
-    console.log("📤 Payload assignedTask count:", uniqueAssignedTask.length);
-    console.log("📤 Payload isEditing:", isEditing);
-    console.log("📤 Payload will replace all previous tasks when saved");
+    // console.log("📤 Payload assignedTask:", form.assignedTask);
+    // console.log("📤 Payload uniqueAssignedTask:", uniqueAssignedTask);
+    // console.log("📤 Payload assignedTask (joined):", uniqueAssignedTask.join(", "));
+            // console.log("📤 Payload assignedTask count:", uniqueAssignedTask.length);
+    // console.log("📤 Payload isEditing:", isEditing);
+    // console.log("📤 Payload will replace all previous tasks when saved");
 
 
     try {
@@ -411,7 +411,7 @@ export default function RegisterUserPage() {
       // รอสักครู่ก่อนรีเซ็ต isSubmitting เพื่อป้องกันการกดซ้ำ
       setTimeout(() => {
         setIsSubmitting(false);
-        console.log("✅ Form submission completed");
+        // console.log("✅ Form submission completed");
       }, 1000);
     }
   };

@@ -119,7 +119,7 @@ useEffect(() => {
       updatedAt: new Date(),
     };
 
-    console.log("📤 Payload ส่งไป backend:", payload);
+    // console.log("📤 Payload ส่งไป backend:", payload);
 
     try {
       setIsSubmitting(true); // disable submit immediately

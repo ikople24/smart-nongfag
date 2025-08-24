@@ -78,9 +78,9 @@ export default function Home() {
     setSelectedLabel(null);
   };
 
-  useEffect(() => {
-    console.log("📦 menu from store:", menu);
-  }, [menu]);
+  // useEffect(() => {
+  //   console.log("📦 menu from store:", menu);
+  // }, [menu]);
   return (
     <div className="min-h-screen bg-white flex flex-col -mt-8 w-full max-w-screen-sm min-w-[320px] mx-auto overflow-x-hidden">
       {/* <h1 className="fixed top-0 left-0 right-0 z-50 bg-white/30 backdrop-blur-md border border-white/40 text-center text-2xl font-semibold text-blue-950 text-shadow-gray-800 shadow-lg py-4">

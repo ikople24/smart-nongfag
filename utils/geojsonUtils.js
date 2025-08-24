@@ -47,7 +47,7 @@ export const convertGeoJSONToPolygons = (geojsonData) => {
         `
       },
       onClick: (polygon) => {
-        console.log('คลิกที่ polygon:', polygon.name);
+        // console.log('คลิกที่ polygon:', polygon.name);
         // สามารถเพิ่ม logic เพิ่มเติมได้ เช่น เปิด modal แสดงรายละเอียด
       }
     };
