@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         'x-app-id': process.env.NEXT_PUBLIC_APP_ID,
       }
     });
-    console.log("📦 AUTH HEADER:", req.headers.authorization);
+    // console.log("📦 AUTH HEADER:", req.headers.authorization);
 
     return res.status(200).json(response.data);
   } catch (error) {

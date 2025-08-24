@@ -23,7 +23,7 @@ const useComplaintStore = create<ComplaintState>((set) => ({
     try {
       const url = status ? `/api/complaints?status=${encodeURIComponent(status)}` : '/api/complaints';
       const res = await axios.get<Complaint[]>(url);
-      console.log("(store) fetched complaints ✅", res.data);
+      // console.log("(store) fetched complaints ✅", res.data);
       set({ complaints: res.data, isLoading: false });
     } catch (err: any) {
       console.error("(store) fetch error ❌", err.message);

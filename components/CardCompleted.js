@@ -1,5 +1,4 @@
 import { CircleCheck } from "lucide-react";
-import ReactCompareImage from 'react-compare-image';
 import { useMemo } from "react";
 import { useMenuStore } from "@/stores/useMenuStore";
 import { useProblemOptionStore } from "@/stores/useProblemOptionStore";
@@ -126,7 +125,8 @@ useEffect(() => {
         ))}
       </div>
       {useMemo(() => {
-        if (beforeImage && assignment?.solutionImages?.[0]) {
+        // แสดงภาพก่อนดำเนินการเป็นหลัก
+        if (beforeImage) {
           return (
             <div
               className="relative my-2 max-w-full h-[180px] sm:h-[220px] mx-auto pointer-events-auto z-10 overflow-hidden rounded-lg border border-green-200"
@@ -135,21 +135,19 @@ useEffect(() => {
               <div className="absolute top-2 left-2 z-20 bg-black bg-opacity-50 text-white px-2 py-0.5 rounded text-xs">
                 ก่อนดำเนินการ
               </div>
-              <div className="absolute top-2 right-2 z-20 bg-black bg-opacity-50 text-white px-2 py-0.5 rounded text-xs">
-                หลังดำเนินการ
-              </div>
-              <ReactCompareImage
-                leftImage={beforeImage}
-                rightImage={assignment.solutionImages[0]}
-                handle={<div />}  // ซ่อนปุ่มเลื่อน
-                sliderLineWidth={2}
-                sliderPositionPercentage={0.5}
+              <img
+                src={beforeImage}
+                alt="ภาพก่อนดำเนินการ"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
               />
             </div>
           );
         }
         return null;
-      }, [beforeImage, assignment?.solutionImages])}
+      }, [beforeImage])}
       <div className="flex justify-end mt-2">
         <div className="inline-flex items-center gap-1 border border-green-500 text-green-600 px-3 py-1 rounded-full text-xs">
           <CircleCheck size={14} className="text-green-500" />

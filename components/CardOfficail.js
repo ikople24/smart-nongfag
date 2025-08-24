@@ -23,12 +23,12 @@ export default function CardOfficail(props) {
       const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       
-      console.log("⏱️ Processing time calculation:", {
-        assigned: assigned.toLocaleString('th-TH'),
-        completed: completed.toLocaleString('th-TH'),
-        diffHours,
-        diffDays
-      });
+      // console.log("⏱️ Processing time calculation:", {
+      //   assigned: assigned.toLocaleString('th-TH'),
+      //   completed: completed.toLocaleString('th-TH'),
+      //   diffHours,
+      //   diffDays
+      // });
       
       if (diffHours <= 24) {
         return { text: "ภายใน 24 ชม", color: "text-green-600", bgColor: "bg-green-100", borderColor: "border-green-300" };
@@ -61,10 +61,10 @@ export default function CardOfficail(props) {
             // ดึงข้อมูล user จาก assignment ที่ตรงกับ complaintId
             if (responsibleAssignments[0].userId) {
               try {
-                console.log("🔍 Fetching user with ID:", responsibleAssignments[0].userId);
+                // console.log("🔍 Fetching user with ID:", responsibleAssignments[0].userId);
                 const userRes = await fetch(`/api/users/get-by-id?userId=${responsibleAssignments[0].userId}`);
                 const userData = await userRes.json();
-                console.log("👤 User data response:", userData);
+                // console.log("👤 User data response:", userData);
                 if (userData.success && userData.user) {
                   setAssignedUser(userData.user);
                 }
@@ -83,11 +83,11 @@ export default function CardOfficail(props) {
       try {
         if (props.probId) {
           const res = await fetch(`/api/complaints?complaintId=${props.probId}`);
-          const data = await res.json();
-          console.log("📋 Complaint data:", data);
-          if (data && data.length > 0) {
-            const status = data[0].status;
-            console.log("📋 Complaint status:", status);
+          const complaintData = await res.json();
+          // console.log("📋 Complaint data:", complaintData);
+          if (complaintData && complaintData.length > 0) {
+            const status = complaintData[0].status;
+            // console.log("📋 Complaint status:", status);
             setComplaintStatus(status);
           }
         }
@@ -131,7 +131,7 @@ export default function CardOfficail(props) {
                     height={60}
                     className="w-15 h-15 rounded-full object-cover border-2 border-blue-300"
                     onError={(e) => {
-                      console.log("🖼️ Image failed to load, using fallback");
+                      // console.log("🖼️ Image failed to load, using fallback");
                       e.target.style.display = 'none';
                       e.target.nextSibling.style.display = 'flex';
                     }}
@@ -185,6 +185,8 @@ export default function CardOfficail(props) {
           )}
         </div>
 
+
+
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-between items-center gap-2">
           <button className="btn btn-outline btn-error btn-sm btn-disabled text-red-400">
@@ -206,8 +208,8 @@ export default function CardOfficail(props) {
             <SatisfactionForm
               complaintId={props.probId}
               status={complaintStatus}
-              onSubmit={(data) => {
-                console.log("ส่งความคิดเห็น:", data);
+              onSubmit={() => {
+                // console.log("ส่งความคิดเห็น");
                 setShowRating(false);
               }}
             />

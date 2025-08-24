@@ -59,7 +59,7 @@ export default function CardAssignment({ probId }) {
           `/api/assignments/by-complaint?complaintId=${probId}`
         );
         const data = await res.json();
-        console.log("📦 assignment data:", data);
+        // console.log("📦 assignment data:", data);
         setAssignment(data.data?.[0]);
       } catch (error) {
         console.error("Failed to fetch assignment:", error);
@@ -90,14 +90,17 @@ export default function CardAssignment({ probId }) {
     <div className="max-w-4xl mx-auto bg-white shadow-md rounded-md p-[6px]">
       <div className="flex flex-col justify-between space-y-4">
 
-        {/* วิธีดำเนินการ Section */}
+        {/* ภาพหลังดำเนินการ Section */}
         {Array.isArray(assignment?.solutionImages) && assignment.solutionImages.length > 0 && (
           <div>
-            <h2 className="text-md font-semibold mb-4">การดำเนินการ</h2>
+            <h2 className="text-md font-semibold mb-4">ภาพหลังดำเนินการ</h2>
             <div className="relative">
+              <div className="absolute top-2 left-2 z-20 bg-black bg-opacity-50 text-white px-2 py-0.5 rounded text-xs">
+                หลังดำเนินการ
+              </div>
               <Image
                 src={assignment?.solutionImages?.[currentIndex] ?? ""}
-                alt={`Main Image ${currentIndex + 1}`}
+                alt={`ภาพหลังดำเนินการ ${currentIndex + 1}`}
                 width={800}
                 height={400}
                 className="w-full h-64 object-cover rounded-t-md transition-all duration-500"
@@ -116,6 +119,18 @@ export default function CardAssignment({ probId }) {
                   >
                     ›
                   </button>
+                  
+                  {/* จุดแสดงตำแหน่งภาพปัจจุบัน */}
+                  <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-20 flex gap-1">
+                    {assignment.solutionImages.map((_, index) => (
+                      <div
+                        key={index}
+                        className={`w-2 h-2 rounded-full ${
+                          index === currentIndex ? 'bg-white' : 'bg-white/50'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </>
               )}
             </div>

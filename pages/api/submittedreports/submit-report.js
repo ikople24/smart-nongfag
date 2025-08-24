@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   try {
     await dbConnect();
     const complaintId = await getNextSequence("complaintId");
-    console.log("📥 Incoming body:", req.body);
-    console.log("🆔 Generated complaintId:", complaintId);
+    // console.log("📥 Incoming body:", req.body);
+    // console.log("🆔 Generated complaintId:", complaintId);
     const newReport = await SubmittedReport.create({
       ...req.body,
       complaintId,

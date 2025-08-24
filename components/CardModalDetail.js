@@ -8,6 +8,7 @@ import CardOfficail from "./CardOfficail";
 import CardAssignment from "./CardAssignment";
 import SatisfactionChart from "./SatisfactionChart";
 
+
 export default function CardModalDetail({ modalData, onClose }) {
   const { menu } = useMenuStore();
   const { problemOptions, fetchProblemOptions } = useProblemOptionStore();
@@ -203,6 +204,7 @@ export default function CardModalDetail({ modalData, onClose }) {
               height={600}
               sizes="(max-width: 768px) 100vw, 800px"
               className="object-contain rounded-lg shadow-lg"
+              style={{ width: 'auto', height: 'auto', maxWidth: '90vw', maxHeight: '90vh' }}
             />
             <button
               onClick={(e) => {
