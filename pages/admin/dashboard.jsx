@@ -103,7 +103,7 @@ export default function AdminDashboard() {
     try {
       setGeojsonLoading(true);
       // console.log('Starting to load GeoJSON data...');
-      const data = await loadGeoJSONFromFile('/saard.geojson');
+      const data = await loadGeoJSONFromFile('/nongfag.geojson');
       setGeojsonData(data);
       // console.log('GeoJSON data loaded successfully:', data);
       // console.log('Number of communities:', data.features?.length || 0);
