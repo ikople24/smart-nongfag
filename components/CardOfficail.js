@@ -37,7 +37,7 @@ export default function CardOfficail(props) {
       } else if (diffDays <= 7) {
         return { text: "ภายใน 7 วัน", color: "text-yellow-600", bgColor: "bg-yellow-100", borderColor: "border-yellow-300" };
       } else if (diffDays <= 15) {
-        return { text: "ภายใน 15 วัน", color: "text-orange-600", bgColor: "bg-orange-100", borderColor: "border-orange-300" };
+        return { text: "ภายใน 15 วัน", color: "text-blue-600", bgColor: "bg-blue-100", borderColor: "border-blue-300" };
       } else {
         return { text: "เกิน 15 วัน", color: "text-red-600", bgColor: "bg-red-100", borderColor: "border-red-300" };
       }

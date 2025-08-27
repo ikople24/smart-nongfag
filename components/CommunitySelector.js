@@ -26,8 +26,8 @@ const CommunitySelector = ({ selected, onSelect = () => {}, error }) => (
           onClick={() => onSelect(c)}
           className={`btn btn-sm rounded-full px-4 py-2 text-base font-medium ${
             selected === c
-              ? "bg-orange-400 text-white border-none"
-              : "bg-orange-100 text-orange-500 hover:bg-orange-300 border-none"
+              ? "bg-blue-600 text-white border-none"
+              : "bg-blue-100 text-blue-500 hover:bg-blue-300 border-none"
           } transition duration-200 min-w-[120px] max-w-full sm:w-auto`}
         >
           {c}

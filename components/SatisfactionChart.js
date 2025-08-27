@@ -40,7 +40,7 @@ const SatisfactionChart = ({ complaintId }) => {
       <div className="flex justify-center">
         <div
           className={`radial-progress after:content-none ${
-            average >= 80 ? 'text-green-500' : average >= 60 ? 'text-orange-500' : 'text-red-500'
+            average >= 80 ? 'text-green-500' : average >= 60 ? 'text-blue-500' : 'text-red-500'
           }`}
           style={{
             "--value": average,

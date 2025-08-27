@@ -183,7 +183,7 @@ export default function AdminPage() {
 
       {activeTab === "problem" && (
         <>
-          <div className={`card bg-base-100 shadow mb-6 ${isEditing ? 'border-2 border-orange-400' : ''}`}>
+          <div className={`card bg-base-100 shadow mb-6 ${isEditing ? 'border-2 border-blue-600' : ''}`}>
             <div className="card-body">
               <h1 className="text-xl font-bold mb-4">
                 {isEditing ? "แก้ไขรายการแจ้งปัญหา" : "Admin Upload Page"}
@@ -369,7 +369,7 @@ export default function AdminPage() {
 
       {activeTab === "admin" && (
         <>
-          <div className={`card bg-base-100 shadow mb-6 ${isEditing ? 'border-2 border-orange-400' : ''}`}>
+          <div className={`card bg-base-100 shadow mb-6 ${isEditing ? 'border-2 border-blue-600' : ''}`}>
             <div className="card-body">
               <h1 className="text-xl font-bold mb-4">
                 {isEditing ? "แก้ไขรายการเจ้าหน้าที่" : "Admin Upload Page (เจ้าหน้าที่)"}
