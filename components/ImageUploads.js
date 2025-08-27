@@ -79,8 +79,8 @@ const ImageUploads = ({ onChange }) => {
          3.แนบรูปภาพ 📁 เลือกรูปภาพ (ไม่เกิน 3 ภาพ)
         </span>
       </label>
-      <div className="w-full flex items-center rounded-md border border-orange-200 bg-orange-50 px-4 py-2">
-        <label className="btn btn-sm bg-orange-600 hover:bg-orange-700 text-white border-none cursor-pointer">
+      <div className="w-full flex items-center rounded-md border border-blue-200 bg-blue-50 px-4 py-2">
+        <label className="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white border-none cursor-pointer">
           เลือกรูป
           <input
             type="file"

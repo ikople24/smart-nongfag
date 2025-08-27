@@ -8,8 +8,10 @@ import ImageUploads from './ImageUploads';
 import Swal from 'sweetalert2';
 import { z } from 'zod';
 import Image from 'next/image';
-const LocationConfirm = dynamic(() => import('./LocationConfirm'), { ssr: false });
-
+const LocationConfirm = dynamic(() => import('./LocationConfirm'), { 
+  ssr: false,
+  loading: () => <div className="h-64 bg-gray-100 rounded flex items-center justify-center">กำลังโหลดแผนที่...</div>
+});
 const schema = z.object({
   community: z.string().min(1, 'กรุณาระบุ 1 ชุมชน'),
 });
@@ -219,7 +221,7 @@ useEffect(() => {
                   <button
                     key={option._id}
                     type="button"
-                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border whitespace-nowrap ${selectedProblems.includes(option._id) ? 'bg-orange-400 text-white border-orange-400' : 'border-gray-300 text-black hover:bg-gray-100'}`}
+                    className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border whitespace-nowrap ${selectedProblems.includes(option._id) ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-300 text-black hover:bg-gray-100'}`}
                     onClick={() => {
                       setSelectedProblems(prev =>
                         prev.includes(option._id)
