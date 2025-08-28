@@ -123,7 +123,7 @@ export default function ReporterInfoCard({ reporterInfo, onClose, onSaveCoordina
               <div className="w-full h-48 rounded-lg overflow-hidden border relative">
                 <MapContainer 
                   center={[currentLocation.lat, currentLocation.lng]} 
-                  zoom={15} 
+                  zoom={14} // ลดจาก 15 เป็น 14 = -25%
                   style={{ height: '100%', width: '100%' }}
                   zoomControl={true}
                   attributionControl={false}
@@ -178,7 +178,7 @@ export default function ReporterInfoCard({ reporterInfo, onClose, onSaveCoordina
               <div className="w-full h-64 rounded-lg overflow-hidden border">
                 <MapContainer 
                   center={[newLocation?.lat || 16.79436, newLocation?.lng || 102.81687]} 
-                  zoom={15} 
+                  zoom={14} // ลดจาก 15 เป็น 14 = -25%
                   style={{ height: '100%', width: '100%' }}
                 >
                   <TileLayer

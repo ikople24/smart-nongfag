@@ -43,7 +43,7 @@ export default function SmallMap({ location, height = "128px" }) {
     <div className="w-full bg-gray-100 rounded-lg border overflow-hidden" style={{ height }}>
       <MapContainer 
         center={[location.lat, location.lng]} 
-        zoom={15} 
+        zoom={14} // ลดจาก 15 เป็น 14 = -25%
         style={{ height: '100%', width: '100%' }}
         zoomControl={false}
         attributionControl={false}

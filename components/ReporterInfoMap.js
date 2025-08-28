@@ -72,7 +72,7 @@ export default function ReporterInfoMap({ location }) {
       <div className="w-full h-62 rounded-lg overflow-hidden border bg-gray-100">
         <MapContainer 
           center={[location.lat, location.lng]} 
-          zoom={15} 
+          zoom={14} // ลดจาก 15 เป็น 14 = -25%
           style={{ height: '100%', width: '100%' }}
           zoomControl={true}
           attributionControl={false}

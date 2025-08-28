@@ -33,7 +33,7 @@ export default function LocationPickerModal({ initialLocation, onConfirm, onCanc
       </p>
       <div className="card p-4 mb-4 relative" style={{ paddingBottom: '4rem' }}>
         <div className="w-full">
-          <MapContainer center={[location.lat, location.lng]} zoom={15} style={{ height: '300px', width: '100%' }}>
+          <MapContainer center={[location.lat, location.lng]} zoom={14} style={{ height: '300px', width: '100%' }}> {/* ลดจาก 15 เป็น 14 = -25% */}
             <LayersControl position="topright">
               <LayersControl.BaseLayer checked name="แผนที่พื้นฐาน">
                 <TileLayer
