@@ -103,7 +103,7 @@ const LocationConfirm = ({
             ) : (
               <MapContainer
                 center={[location.lat, location.lng]}
-                zoom={17}
+                zoom={16} // ลดจาก 17 เป็น 16 = -25%
                 scrollWheelZoom={false}
                 style={{ height: "100%", width: "100%" }}
                 className="z-0"
